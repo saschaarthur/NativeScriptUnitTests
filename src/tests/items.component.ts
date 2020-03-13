@@ -11,10 +11,14 @@ describe('ItemsComponent Test', () => {
     beforeEach(nsTestBedBeforeEach([ItemsComponent]));
     afterEach(nsTestBedAfterEach(false));
 
-    return nsTestBedRender(ItemsComponent).then((fixture) => {
-        fixture.detectChanges();
-        const component = fixture.componentInstance;
-        expect(component).toBeTruthy;
+    it('should be defined', () => {
+
+        nsTestBedRender(ItemsComponent).then((fixture) => {
+            fixture.detectChanges();
+            const component = fixture.componentInstance;
+            expect(component).toBeTruthy;
+        });
+
     });
 
 });
