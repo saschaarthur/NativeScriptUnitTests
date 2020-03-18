@@ -1,4 +1,5 @@
 import { ItemsComponent } from '../app/item/items.component';
+import { ItemService } from '../app/item/item.service';
 
 import {
     nsTestBedAfterEach,
@@ -8,7 +9,7 @@ import {
 
 describe('ItemsComponent Test', () => {
 
-    beforeEach(nsTestBedBeforeEach([ItemsComponent]));
+    beforeEach(nsTestBedBeforeEach([ItemService, ItemsComponent]));
     afterEach(nsTestBedAfterEach(false));
 
     it('should be defined', () => {
@@ -16,7 +17,7 @@ describe('ItemsComponent Test', () => {
         nsTestBedRender(ItemsComponent).then((fixture) => {
             fixture.detectChanges();
             const component = fixture.componentInstance;
-            expect(component).toBeTruthy;
+            expect(component).toBeTruthy();
         });
 
     });

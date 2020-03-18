@@ -1,24 +1,18 @@
 import { ItemService } from '../app/item/item.service';
 
-import {
-    nsTestBedAfterEach,
-    nsTestBedBeforeEach,
-    nsTestBedRender
-} from 'nativescript-angular/testing';
-
 describe('ItemsService Test', () => {
 
-    beforeEach(nsTestBedBeforeEach([ItemService]));
-    afterEach(nsTestBedAfterEach(false));
+    let service: ItemService;
+
+    beforeEach(() => { service = new ItemService(); });
 
     it('should be defined',() => {
+        expect(service).toBeTruthy();
+    });
 
-        nsTestBedRender(ItemService).then((fixture) => {
-            // fixture.detectChanges();
-            // const component = fixture.componentInstance;
-            expect(fixture).toBeTruthy;
-        });
-
+    it('should have its functions defined',() => {
+        expect(service.getItems).toBeTruthy();
+        expect(service.getItem).toBeTruthy();
     });
 
 });
