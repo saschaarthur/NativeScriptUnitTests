@@ -1,0 +1,32 @@
+sudo: required
+language: generic
+dist: focal
+
+services:
+  - docker
+
+env:
+  # latest arm images
+  - IMG="system-images;android-25;google_apis;armeabi-v7a"
+  - IMG="system-images;android-25;google_apis;arm64-v8a"
+  - IMG="system-images;android-24;google_apis;arm64-v8a"
+  - IMG="system-images;android-23;google_apis;armeabi-v7a"
+  # x86 below, not working because of missing vt-x
+  # - IMG="system-images;android-29;google_apis;x86_64"
+  # - IMG="system-images;android-30;google_apis;x86"
+  # - IMG="system-images;android-30;google_apis;x86_64"
+  # - IMG="system-images;android-30;google_apis_playstore;x86"
+  # - IMG="system-images;android-30;google_apis_playstore;x86_64"
+
+script:
+  - docker exec -it dockertest bash -c 'cd /build && npm ci'
+  - docker exec -it dockertest bash -c "cd /build && bash wait-for-emu.sh" # all done, now we need to wait for the emulator..
+  - docker exec -it dockertest bash -c 'cd /build && tns test android'
+
+before_script:
+  - sudo chown 1000:2000 $(pwd) -R # docker container runs with userid 1000
+  - docker run -d --name dockertest -e NG_CLI_ANALYTICS=ci -v/etc/localtime:/etc/localtime -v$(pwd):/build -it scratchy/nativescript-cli:18.04-10.x-6.7.8-29.0.3
+  - docker exec -it dockertest bash -c "cd /build && bash emulator.sh \"${IMG}\"" # download and start emulator
+
+after_script:
+  - docker stop dockertest
